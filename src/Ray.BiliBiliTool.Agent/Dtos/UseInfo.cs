@@ -11,7 +11,7 @@ namespace Ray.BiliBiliTool.Agent.Dtos
 
         public LevelInfo Level_info { get; set; }
 
-        public long Money { get; set; }
+        public decimal Money { get; set; }
 
         public string Uname { get; set; }
 

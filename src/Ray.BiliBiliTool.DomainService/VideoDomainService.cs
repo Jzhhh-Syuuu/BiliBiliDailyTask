@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Ray.BiliBiliTool.Agent.Dtos;
@@ -148,7 +149,7 @@ namespace Ray.BiliBiliTool.DomainService
             _logger.LogInformation("还需再投{need}枚硬币", needCoins);
 
             //投币前硬币余额
-            int coinBalance = _coinDomainService.GetCoinBalance();
+            decimal coinBalance = _coinDomainService.GetCoinBalance();
             _logger.LogInformation("投币前余额为 : " + coinBalance);
 
             if (coinBalance <= 0)
@@ -161,7 +162,7 @@ namespace Ray.BiliBiliTool.DomainService
             if (coinBalance < needCoins)
             {
                 _logger.LogInformation("因硬币余额不足，目标投币数调整为: {coinBalance}", coinBalance);
-                needCoins = coinBalance;
+                needCoins = (int)Math.Ceiling(coinBalance);
             }
 
             int successCoins = 0;
@@ -202,6 +203,8 @@ namespace Ray.BiliBiliTool.DomainService
                 if (isSuccess)
                 {
                     successCoins++;
+                    //投币成功后添加间隔时间
+                    Thread.Sleep(200);
                 }
 
                 if (tryCount > 10)
@@ -209,6 +212,7 @@ namespace Ray.BiliBiliTool.DomainService
                     _logger.LogInformation("尝试投币次数超过10次，投币任务终止");
                     break;
                 }
+
             }
 
             _logger.LogInformation("投币任务完成后余额为: " + _accountApi.GetCoinBalance().Result.Data.Money);

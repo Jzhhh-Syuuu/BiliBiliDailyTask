@@ -49,7 +49,7 @@ namespace Ray.BiliBiliTool.DomainService
         /// </summary>
         /// <returns>兑换银瓜子后硬币余额</returns>
         [LogIntercepter("直播中心新瓜子兑换B币")]
-        public int ExchangeSilver2Coin()
+        public decimal ExchangeSilver2Coin()
         {
             var response = _liveApi.ExchangeSilver2Coin().Result;
             if (response.Code == 0)
@@ -62,7 +62,7 @@ namespace Ray.BiliBiliTool.DomainService
             }
 
             var queryStatus = _liveApi.GetExchangeSilverStatus().Result;
-            int silver2CoinMoney = _coinDomainService.GetCoinBalance();
+            decimal silver2CoinMoney = _coinDomainService.GetCoinBalance();
 
             _logger.LogInformation("当前银瓜子余额: {0}", queryStatus.Data.Silver);
             _logger.LogInformation("兑换银瓜子后硬币余额: {0}", silver2CoinMoney);
