@@ -17,6 +17,7 @@ namespace Ray.BiliBiliTool.Agent.Interfaces
         /// </summary>
         /// <returns></returns>
         [Get("/x/web-interface/nav")]
+        [Headers("Referer")]//需要移除
         Task<BiliApiResponse<UseInfo>> LoginByCookie();
 
         /// <summary>
